@@ -1,8 +1,8 @@
 #include "philo.h"
 
-void	exit_error(char *msg)
+int	exit_error(char *msg)
 {
 	printf("Error\n");
 	printf("%s\n", msg);
-	exit(-1);
+	return (-1);
 }

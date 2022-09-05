@@ -13,6 +13,7 @@ SRCS = $(addprefix $(SRCS_DIR)/, \
 		utils.c \
 		atoi.c \
 		init.c \
+		time.c \
 		)
 
 OBJS = $(SRCS:.c=.o)
