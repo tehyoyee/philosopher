@@ -1,7 +1,7 @@
 NAME = philo
-CC = cc
-CFLAGS = -c
-# CFLAGS = -Wall -Wextra -Werror -c
+CC = gcc
+# CFLAGS = -c 
+CFLAGS = -fsanitize=thread -c # -Wall -Wextra -Werror -c
 RM = rm -f
 AR = ar
 CRS = crs
@@ -14,6 +14,7 @@ SRCS = $(addprefix $(SRCS_DIR)/, \
 		atoi.c \
 		init.c \
 		time.c \
+		run.c \
 		)
 
 OBJS = $(SRCS:.c=.o)

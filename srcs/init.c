@@ -1,13 +1,24 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   init.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: taehykim <taehykim@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/09/06 16:30:04 by taehykim          #+#    #+#             */
+/*   Updated: 2022/09/06 16:30:05 by taehykim         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philo.h"
 
 int	check_args(t_rule *rule)
 {
-	if (rule->num_philo < 2 || rule->num_philo > 100 || \
+	if (rule->num_philo < 1 || rule->num_philo > 200 || \
 		rule->time_to_die < 60 || rule->time_to_eat < 60 \
 		|| rule->time_to_sleep < 60)
 		return (-1);
 	return (0);
-
 }
 
 int	init_person(t_rule *rule_)
@@ -23,9 +34,9 @@ int	init_person(t_rule *rule_)
 		rule_->person[i].id = i;
 		rule_->person[i].left_fork = i;
 		rule_->person[i].right_fork = (i + 1) % rule_->num_philo;
-		rule_->person[i].time = 0;
-		rule_->person[i].eat_time = 0;
+		rule_->person[i].eat_cnt = 0;
 		rule_->person[i].rule = rule_;
+		rule_->person[i].eat_time_last = get_time();
 		i++;
 	}
 	return (0);
@@ -49,6 +60,8 @@ int	init_mutex(t_rule *rule)
 		return (-1);
 	if (pthread_mutex_init(&rule->eat, NULL))
 		return (-1);
+	if (pthread_mutex_init(&rule->fulling_eat, NULL))
+		return (-1);
 	return (0);
 }
 
@@ -67,11 +80,13 @@ int	init_rule(int argc, char **argv, t_rule *rule)
 	rule->time_to_die = ft_atoi(argv[2]);
 	rule->time_to_eat = ft_atoi(argv[3]);
 	rule->time_to_sleep = ft_atoi(argv[4]);
+	rule->death = 0;
+	rule->eat_full = 0;
 	if (argc == 6)
 		rule->num_must_eat = ft_atoi(argv[5]);
-	if (check_args(rule))
-		return (-1);
-	if (init_mutex(rule))
+	else
+		rule->num_must_eat = 0;
+	if (check_args(rule) || init_mutex(rule))
 		return (-1);
 	if (init_person(rule))
 		return (-1);
