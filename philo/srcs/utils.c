@@ -21,8 +21,16 @@ int	exit_error(char *msg)
 
 void	show_status(t_rule *rule, char *str, int id)
 {
-	pthread_mutex_lock(&rule->show_status);
+	pthread_mutex_lock(&rule->eat_cnt_mutex);
+	pthread_mutex_lock(&rule->death_mutex);
 	if (!rule->death && !rule->eat_full)
 		printf("%lld %d %s\n", get_time() - rule->start_time, id + 1, str);
-	pthread_mutex_unlock(&rule->show_status);
+	pthread_mutex_unlock(&rule->death_mutex);
+	pthread_mutex_unlock(&rule->eat_cnt_mutex);
+}
+
+void	ft_free_mutex(t_rule *rule)
+{
+	free(rule->fork);
+	free(rule->person_mutex);
 }

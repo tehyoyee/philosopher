@@ -17,8 +17,9 @@ int	main(int argc, char **argv)
 	t_rule	rule;
 
 	if (argc != 5 && argc != 6)
-		return (exit_error("incorrect argument number!"));
+		return (exit_error("incorrect argument number"));
 	if (init_rule(argc, argv, &rule))
-		return (exit_error("argument"));
-	run_thread(&rule);
+		return (exit_error("incorrect argument"));
+	if (run_thread(&rule))
+		return (exit_error("thread error"));
 }

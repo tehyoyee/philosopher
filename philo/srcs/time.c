@@ -27,11 +27,11 @@ void	eating_time(t_person *p)
 	long long	previous_time;
 
 	previous_time = get_time();
-	while (!p->rule->death)
+	while (1)
 	{
 		if (get_time() - previous_time >= (long long)p->rule->time_to_eat)
 			break ;
-		usleep(100);
+		usleep(200);
 	}
 }
 
@@ -40,10 +40,10 @@ void	sleeping_time(t_person *p)
 	long long	previous_time;
 
 	previous_time = get_time();
-	while (!p->rule->death)
+	while (1)
 	{
 		if (get_time() - previous_time >= (long long)p->rule->time_to_sleep)
 			break ;
-		usleep(100);
+		usleep(200);
 	}
 }

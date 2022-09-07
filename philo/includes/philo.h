@@ -25,6 +25,7 @@ typedef struct s_person {
 	int				right_fork;
 	int				eat_cnt;
 	long long		eat_time_last;
+
 	pthread_t		thread;
 	struct s_rule	*rule;
 }			t_person;
@@ -38,13 +39,16 @@ typedef struct s_rule {
 	int				eat_full;
 	int				num_must_eat;
 	long long		start_time;
+
 	pthread_mutex_t	*fork;
-	pthread_mutex_t	show_status;
-	pthread_mutex_t	eat;
-	pthread_mutex_t	fulling_eat;
+	pthread_mutex_t	eat_cnt_mutex;
+	pthread_mutex_t	death_mutex;
+	pthread_mutex_t	time;
+	pthread_mutex_t	*person_mutex;
 	struct s_person	*person;
 }			t_rule;
 
+void		die_philo(t_rule *rule);
 int			run_thread(t_rule *rule);
 void		show_status(t_rule *rule, char *str, int id);
 int			exit_error(char *msg);
@@ -53,5 +57,6 @@ int			init_rule(int argc, char **argv, t_rule *rule);
 long long	get_time(void);
 void		eating_time(t_person *p);
 void		sleeping_time(t_person *p);
+void		ft_free_mutex(t_rule *rule);
 
 #endif

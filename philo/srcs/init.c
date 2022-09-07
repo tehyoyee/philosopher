@@ -12,12 +12,17 @@
 
 #include "philo.h"
 
-int	check_args(t_rule *rule)
+int	check_args(int argc, char **argv)
 {
-	if (rule->num_philo < 1 || rule->num_philo > 200 || \
-		rule->time_to_die < 60 || rule->time_to_eat < 60 \
-		|| rule->time_to_sleep < 60)
-		return (-1);
+	int	i;
+
+	i = 1;
+	while (i < argc)
+	{
+		if (ft_atoi(argv[i]) <= 0)
+			return (-1);
+		i++;
+	}
 	return (0);
 }
 
@@ -42,40 +47,46 @@ int	init_person(t_rule *rule_)
 	return (0);
 }
 
+int	allocate_mutex(t_rule *rule)
+{
+	rule->fork = malloc(sizeof(pthread_mutex_t) * rule->num_philo);
+	if (!rule->fork)
+		return (-1);
+	rule->person_mutex = malloc(sizeof(pthread_mutex_t) * rule->num_philo);
+	if (!rule->person_mutex)
+	{
+		ft_free_mutex(rule);
+		return (-1);
+	}
+	return (0);
+}
+
 int	init_mutex(t_rule *rule)
 {
 	int	i;
 
-	i = 0;
-	rule->fork = malloc(sizeof(pthread_mutex_t) * rule->num_philo);
-	if (!rule->fork)
+	if (allocate_mutex(rule))
 		return (-1);
+	i = 0;
 	while (i < rule->num_philo)
 	{
 		if (pthread_mutex_init(&rule->fork[i], NULL))
 			return (-1);
+		if (pthread_mutex_init(&rule->person_mutex[i], NULL))
+			return (-1);
 		i++;
 	}
-	if (pthread_mutex_init(&rule->show_status, NULL))
+	if (pthread_mutex_init(&rule->eat_cnt_mutex, NULL))
 		return (-1);
-	if (pthread_mutex_init(&rule->eat, NULL))
+	if (pthread_mutex_init(&rule->death_mutex, NULL))
 		return (-1);
-	if (pthread_mutex_init(&rule->fulling_eat, NULL))
+	if (pthread_mutex_init(&rule->time, NULL))
 		return (-1);
 	return (0);
 }
 
 int	init_rule(int argc, char **argv, t_rule *rule)
 {
-	int	i;
-
-	i = 1;
-	while (i < argc)
-	{
-		if (atoi(argv[i]) <= 0)
-			return (-1);
-		i++;
-	}
 	rule->num_philo = ft_atoi(argv[1]);
 	rule->time_to_die = ft_atoi(argv[2]);
 	rule->time_to_eat = ft_atoi(argv[3]);
@@ -86,9 +97,12 @@ int	init_rule(int argc, char **argv, t_rule *rule)
 		rule->num_must_eat = ft_atoi(argv[5]);
 	else
 		rule->num_must_eat = 0;
-	if (check_args(rule) || init_mutex(rule))
+	if (check_args(argc, argv))
 		return (-1);
-	if (init_person(rule))
+	if (init_mutex(rule) || init_person(rule))
+	{
+		ft_free_mutex(rule);
 		return (-1);
+	}
 	return (0);
 }
