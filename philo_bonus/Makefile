@@ -1,6 +1,8 @@
-NAME = philo
+NAME = philo_bonus
 CC = gcc
-CFLAGS = -fsanitize=thread -Wall -Wextra -Werror -c
+CFLAGS = -c
+# CFLAGS = -fsanitize=thread -Wall -Wextra -Werror -c
+
 RM = rm -f
 AR = ar
 CRS = crs
