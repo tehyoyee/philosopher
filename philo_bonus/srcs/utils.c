@@ -29,8 +29,11 @@ void	show_status(t_rule *rule, char *str, int id)
 	pthread_mutex_unlock(&rule->eat_cnt_mutex);
 }
 
-void	ft_free_sem(t_rule *rule)
+void	destroy_sem()
 {
-	// free(rule->sem_fork);
-	// free(rule->sem_person);
+	sem_unlink("sem_forks");
+	sem_unlink("sem_eat_cnt");
+	sem_unlink("sem_death_cnt");
+	sem_unlink("sem_time");
+	sem_unlink("sem_person");
 }

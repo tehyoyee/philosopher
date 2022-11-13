@@ -22,12 +22,9 @@
 
 typedef struct s_person {
 	int				id;
-	int				left_fork;
-	int				right_fork;
 	int				eat_cnt;
 	long long		eat_time_last;
 
-	pthread_t		thread;
 	struct s_rule	*rule;
 }			t_person;
 
@@ -42,18 +39,20 @@ typedef struct s_rule {
 	long long		start_time;
 
 	sem_t			*sem_fork;
-	sem_t			sem_eat_cnt;
-	sem_t			sem_death_cnt;
-	sem_t			sem_time;
-	sem_t			sem_person;
-	
+	sem_t			*sem_eat_cnt;
+	sem_t			*sem_death_cnt;
+	sem_t			*sem_time;
+	sem_t			*sem_person;
+
 	pthread_mutex_t	*fork;
 	pthread_mutex_t	eat_cnt_mutex;
 	pthread_mutex_t	death_mutex;
 	pthread_mutex_t	time;
 	pthread_mutex_t	*person_mutex;
 	struct s_person	*person;
-}			t_rule;
+}					t_rule;
+
+void		destroy_sem();
 
 void		die_philo(t_rule *rule);
 int			run_thread(t_rule *rule);

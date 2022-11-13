@@ -37,6 +37,6 @@ void	print_state(t_philo *philo, t_state state, uint64_t timestamp)
 	if (!philo->env->is_running)
 		return ;
 	pthread_mutex_lock(&philo->env->write);
-	printf("%lu %d %s\n", timestamp, philo->id, states[state]);
+	printf("%llu %d %s\n", timestamp, philo->id, states[state]);
 	pthread_mutex_unlock(&philo->env->write);
 }

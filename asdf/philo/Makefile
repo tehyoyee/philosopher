@@ -20,7 +20,7 @@ OBJ_DIR	:= obj
 OBJ		:= $(SRC:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 
 INCLUDE	:= -I./include
-CFLAGS	:= -ggdb -Wall -Wextra -Werror -lpthread $(INCLUDE)
+CFLAGS	:= -fsanitize=thread -Wall -Wextra -Werror $(INCLUDE)
 
 all: $(NAME)
 

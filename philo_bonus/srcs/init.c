@@ -26,19 +26,17 @@ int	check_args(int argc, char **argv)
 	return (0);
 }
 
-int	init_person(t_rule *rule_)
+void	init_person(t_rule *rule_)
 {
 	int	i;
 
 	i = 0;
 	rule_->person = malloc(sizeof(t_person) * rule_->num_philo);
 	if (!rule_->person)
-		return (-1);
+		exit_error("malloc error\n");
 	while (i < rule_->num_philo)
 	{
 		rule_->person[i].id = i;
-		rule_->person[i].left_fork = i;
-		rule_->person[i].right_fork = (i + 1) % rule_->num_philo;
 		rule_->person[i].eat_cnt = 0;
 		rule_->person[i].rule = rule_;
 		rule_->person[i].eat_time_last = get_time();
@@ -47,42 +45,19 @@ int	init_person(t_rule *rule_)
 	return (0);
 }
 
-// int	allocate_sem(t_rule *rule)
-// {
-// 	rule->sem_fork = malloc(sizeof(sem_t) * rule->num_philo);
-// 	if (!rule->fork)
-// 		return (-1);
-// 	rule->sem_person = malloc(sizeof(sem_t) * rule->num_philo);
-// 	if (!rule->sem_person)
-// 	{
-// 		ft_free_sem(rule);
-// 		return (-1);
-// 	}
-// 	return (0);
-// }
-
-int	init_sem(t_rule *rule)
+void	init_sem(t_rule *rule)
 {
-	int	i;
+	destroy_sem()
 
-	// if (allocate_sem(rule))
-		// return (-1);
-	i = 0;
-	while (i < rule->num_philo)
-	{
-		if (sem_open("forks[%d]", i, O_CREAT | O_EXCL, 666, 1))
-			return (-1);
-		if (sem_open("person_sem[%d]", O_CREAT | O_EXCL, 666, 1))
-			return (-1);
-		i++;
-	}
-	if (sem_open("sem_eat_cnt", O_CREAT | O_EXCL, 666, 1))
-		return (-1);
-	if (sem_open("sem_death_cnt", O_CREAT | O_EXCL, 666, 1))
-		return (-1);
-	if (sem_open("sem_time", O_CREAT | O_EXCL, 666, 1))
-		return (-1);
-	return (0);
+	rule->sem_forks = sem_open("sem_forks", O_CREAT, 0644, rule->num_philo);
+	rule->sem_person = sem_open("sem_person", O_CREAT, 0644, 1);
+	rule->sem_eat_cnt = sem_open("sem_eat_cnt", O_CREAT, 0644, 1);
+	rule->sem_death_cnt = sem_open("sem_death_cnt", O_CREAT, 0644, 1);
+	rule->sem_time = sem_open("sem_time", O_CREAT, 0644, 1);
+	if (rule->sem_forks == SEM_FAILED || rule->sem_person == SEM_FAILED \
+		rule->sem_eat_cnt == SEM_FAILED || rule->sem_death_cnt == SEM_FAILED \
+		rule->sem_time == SEM_FAILED)
+		exit_error("semaphore error\n");
 }
 
 int	init_rule(int argc, char **argv, t_rule *rule)
@@ -99,10 +74,7 @@ int	init_rule(int argc, char **argv, t_rule *rule)
 		rule->num_must_eat = 0;
 	if (check_args(argc, argv))
 		return (-1);
-	if (init_sem(rule) || init_person(rule))
-	{
-		// ft_free_sem(rule);
-		return (-1);
-	}
+	init_sem(rule);
+	init_person(rule);
 	return (0);
 }
