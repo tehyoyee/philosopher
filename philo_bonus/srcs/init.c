@@ -30,11 +30,8 @@ void	init_sem(t_rule *rule)
 {
 	destroy_sem();
 	rule->sem_forks = sem_open("sem_forks", O_CREAT, 0644, rule->num_philo);
-	rule->sem_eat_cnt = sem_open("sem_eat_cnt", O_CREAT, 0644, 1);
-	rule->sem_time = sem_open("sem_time", O_CREAT, 0644, 1);
 	rule->sem_done = sem_open("sem_done", O_CREAT, 0644, 0);
-	if (rule->sem_forks == SEM_FAILED || rule->sem_eat_cnt == SEM_FAILED \
-	|| rule->sem_time == SEM_FAILED || rule->sem_done == SEM_FAILED)
+	if (rule->sem_forks == SEM_FAILED || rule->sem_done == SEM_FAILED)
 		exit_error("semaphore error\n");
 }
 
