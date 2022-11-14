@@ -1,7 +1,18 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: taehykim <taehykim@student.42.fr>          +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2022/11/14 16:12:37 by taehykim          #+#    #+#              #
+#    Updated: 2022/11/14 16:12:38 by taehykim         ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
 NAME = philo_bonus
 CC = gcc
-CFLAGS = -c
-# CFLAGS = -fsanitize=thread -Wall -Wextra -Werror -c
+CFLAGS = -Wall -Wextra -Werror -c
 RM = rm -f
 AR = ar
 CRS = crs
@@ -15,7 +26,6 @@ SRCS = $(addprefix $(SRCS_DIR)/, \
 		init.c \
 		time.c \
 		run.c \
-		check_die.c \
 		)
 
 OBJS = $(SRCS:.c=.o)

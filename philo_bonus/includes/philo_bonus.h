@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo.h                                            :+:      :+:    :+:   */
+/*   philo_bonus.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: taehykim <taehykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/06 16:33:32 by taehykim          #+#    #+#             */
-/*   Updated: 2022/09/06 16:33:33 by taehykim         ###   ########.fr       */
+/*   Updated: 2022/11/14 16:12:25 by taehykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@
 # include <semaphore.h>
 # include <signal.h>
 # include <sys/wait.h>
-# include <fcntl.h>
 
 typedef struct s_person {
 	int				id;
@@ -39,22 +38,19 @@ typedef struct s_rule {
 	int				time_to_sleep;
 	int				num_must_eat;
 	long long		start_time;
+
 	pthread_t		checker;
 	sem_t			*sem_done;
 	sem_t			*sem_forks;
 	sem_t			*sem_eat_cnt;
 	sem_t			*sem_time;
-	sem_t			*sem_person;
 
 	struct s_person	*person;
 }					t_rule;
 
-void		destroy_sem();
-void		destroy_process(t_rule *rule);
-int			end_process(t_rule *rule);
-
-void		die_philo(t_rule *rule);
+void		destroy_sem(void);
 void		run_process(t_person *p);
+int			end_process(t_rule *rule);
 void		show_status(t_rule *rule, char *str, int id);
 int			exit_error(char *msg);
 int			ft_atoi(const char *str);

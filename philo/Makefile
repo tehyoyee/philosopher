@@ -1,3 +1,15 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: taehykim <taehykim@student.42.fr>          +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2022/11/14 16:12:53 by taehykim          #+#    #+#              #
+#    Updated: 2022/11/14 16:12:54 by taehykim         ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
 NAME = philo
 CC = gcc
 CFLAGS = -Wall -Wextra -Werror -c 
@@ -25,7 +37,7 @@ all: $(NAME)
 		$(CC) $(CFLAGS) -I $(INC_DIR) $< -o $@ 
 
 $(NAME): $(OBJS)
-		$(CC) -o $@ $(OBJS)  -fsanitize=thread -g
+		$(CC) -o $@ $(OBJS)
 
 clean:
 		$(RM) $(OBJS)

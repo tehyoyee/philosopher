@@ -15,7 +15,7 @@
 int	pick_fork(t_person *p)
 {
 	if (p->id % 2)
-		usleep(p->rule->time_to_eat / 2);
+		usleep(p->rule->time_to_eat * 2);
 	pthread_mutex_lock(&(p->rule->fork[p->left_fork]));
 	show_status(p->rule, "has taken a fork", p->id);
 	if (p->right_fork == p->left_fork)

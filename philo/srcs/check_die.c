@@ -17,7 +17,7 @@ int	eat_full_check(t_rule *rule)
 	int	i;
 
 	i = 0;
-	usleep(100);
+	usleep(1000);
 	pthread_mutex_lock(&rule->person_mutex[i]);
 	while (i < rule->num_philo && rule->num_must_eat && \
 		rule->person[i].eat_cnt >= rule->num_must_eat)
@@ -44,6 +44,7 @@ int	detect_person_whether_die(t_rule *rule)
 	i = 0;
 	while (i < rule->num_philo)
 	{
+		usleep(1000);
 		pthread_mutex_lock(&rule->time);
 		temp = get_time() - rule->person[i].eat_time_last;
 		pthread_mutex_unlock(&rule->time);

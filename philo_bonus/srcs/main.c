@@ -6,13 +6,13 @@
 /*   By: taehykim <taehykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/06 16:30:09 by taehykim          #+#    #+#             */
-/*   Updated: 2022/09/06 16:30:10 by taehykim         ###   ########.fr       */
+/*   Updated: 2022/11/14 16:11:49 by taehykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
 
-void	*checker_function(void *arg)
+void	*checker(void *arg)
 {
 	int		i;
 	t_rule	*rule;
@@ -33,11 +33,8 @@ int	main(int argc, char **argv)
 		return (exit_error("incorrect argument number"));
 	if (init_rule(argc, argv, &rule))
 		return (exit_error("incorrect argument"));
-	pthread_create(&rule.checker, NULL, checker_function, &rule);
+	pthread_create(&rule.checker, NULL, checker, &rule);
 	pthread_detach(rule.checker);
 	sem_wait(rule.sem_done);
 	end_process(&rule);
-	// printf("asdf\n");
-	// if (run_process(&rule))
-		// return (exit_error("thread error"));
 }

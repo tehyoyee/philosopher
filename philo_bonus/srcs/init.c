@@ -6,7 +6,7 @@
 /*   By: taehykim <taehykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/06 16:30:04 by taehykim          #+#    #+#             */
-/*   Updated: 2022/09/06 16:30:05 by taehykim         ###   ########.fr       */
+/*   Updated: 2022/11/14 16:11:43 by taehykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,18 @@ int	check_args(int argc, char **argv)
 	return (0);
 }
 
+void	init_sem(t_rule *rule)
+{
+	destroy_sem();
+	rule->sem_forks = sem_open("sem_forks", O_CREAT, 0644, rule->num_philo);
+	rule->sem_eat_cnt = sem_open("sem_eat_cnt", O_CREAT, 0644, 1);
+	rule->sem_time = sem_open("sem_time", O_CREAT, 0644, 1);
+	rule->sem_done = sem_open("sem_done", O_CREAT, 0644, 0);
+	if (rule->sem_forks == SEM_FAILED || rule->sem_eat_cnt == SEM_FAILED \
+	|| rule->sem_time == SEM_FAILED || rule->sem_done == SEM_FAILED)
+		exit_error("semaphore error\n");
+}
+
 void	init_person(t_rule *rule_)
 {
 	int	i;
@@ -42,20 +54,6 @@ void	init_person(t_rule *rule_)
 		rule_->person[i].eat_time_last = get_time();
 		i++;
 	}
-}
-
-void	init_sem(t_rule *rule)
-{
-	destroy_sem();
-	rule->sem_forks = sem_open("/sem_forks", O_CREAT, 0644, rule->num_philo);
-	rule->sem_person = sem_open("/sem_person", O_CREAT, 0644, rule->num_philo);
-	rule->sem_eat_cnt = sem_open("/sem_eat_cnt", O_CREAT, 0644, 1);
-	rule->sem_time = sem_open("/sem_time", O_CREAT, 0644, 1);
-	rule->sem_done = sem_open("/sem_done", O_CREAT, 0644, 0);
-	if (rule->sem_forks == SEM_FAILED || rule->sem_person == SEM_FAILED \
-	|| rule->sem_eat_cnt == SEM_FAILED \
-	|| rule->sem_time == SEM_FAILED || rule->sem_done == SEM_FAILED)
-		exit_error("semaphore error\n");
 }
 
 void	init_process(t_rule *rule)
