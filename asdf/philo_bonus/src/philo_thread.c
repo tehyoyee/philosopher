@@ -35,6 +35,7 @@ void	*life_cycle_checker(void *arg)
 	env = philo->env;
 	while (true)
 	{
+		// printf("asdf\n");
 		if (philo->eat_count == env->must_eat)
 			break ;
 		timestamp = get_time_ms();
@@ -52,7 +53,7 @@ void	*life_cycle_checker(void *arg)
 void	start_lifecycle(t_philo *philo)
 {
 	pthread_t	checker_thread;
-
+	printf("id = %d\n", philo->id);
 	if (philo->id % 2 == 0)
 	{
 		philo_think(philo);

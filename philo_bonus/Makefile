@@ -2,7 +2,6 @@ NAME = philo_bonus
 CC = gcc
 CFLAGS = -c
 # CFLAGS = -fsanitize=thread -Wall -Wextra -Werror -c
-
 RM = rm -f
 AR = ar
 CRS = crs
@@ -27,7 +26,7 @@ all: $(NAME)
 		$(CC) $(CFLAGS) -I $(INC_DIR) $< -o $@
 
 $(NAME): $(OBJS)
-		$(CC) -fsanitize=thread -o $@ $(OBJS)
+		$(CC) -o $@ $(OBJS)
 
 clean:
 		$(RM) $(OBJS)

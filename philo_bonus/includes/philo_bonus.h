@@ -19,6 +19,9 @@
 # include <pthread.h>
 # include <sys/time.h>
 # include <semaphore.h>
+# include <signal.h>
+# include <sys/wait.h>
+# include <fcntl.h>
 
 typedef struct s_person {
 	int				id;
@@ -29,33 +32,29 @@ typedef struct s_person {
 }			t_person;
 
 typedef struct s_rule {
+	int				*pids;
 	int				num_philo;
 	int				time_to_die;
 	int				time_to_eat;
 	int				time_to_sleep;
-	int				death;
-	int				eat_full;
 	int				num_must_eat;
 	long long		start_time;
-
-	sem_t			*sem_fork;
+	pthread_t		checker;
+	sem_t			*sem_done;
+	sem_t			*sem_forks;
 	sem_t			*sem_eat_cnt;
-	sem_t			*sem_death_cnt;
 	sem_t			*sem_time;
 	sem_t			*sem_person;
 
-	pthread_mutex_t	*fork;
-	pthread_mutex_t	eat_cnt_mutex;
-	pthread_mutex_t	death_mutex;
-	pthread_mutex_t	time;
-	pthread_mutex_t	*person_mutex;
 	struct s_person	*person;
 }					t_rule;
 
 void		destroy_sem();
+void		destroy_process(t_rule *rule);
+int			end_process(t_rule *rule);
 
 void		die_philo(t_rule *rule);
-int			run_thread(t_rule *rule);
+void		run_process(t_person *p);
 void		show_status(t_rule *rule, char *str, int id);
 int			exit_error(char *msg);
 int			ft_atoi(const char *str);

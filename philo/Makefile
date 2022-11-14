@@ -1,6 +1,6 @@
 NAME = philo
 CC = gcc
-CFLAGS = -fsanitize=thread -Wall -Wextra -Werror -c
+CFLAGS = -Wall -Wextra -Werror -c 
 RM = rm -f
 AR = ar
 CRS = crs
@@ -22,10 +22,10 @@ OBJS = $(SRCS:.c=.o)
 all: $(NAME)
 
 %.o: %.c
-		$(CC) $(CFLAGS) -I $(INC_DIR) $< -o $@
+		$(CC) $(CFLAGS) -I $(INC_DIR) $< -o $@ 
 
 $(NAME): $(OBJS)
-		$(CC) -fsanitize=thread -o $@ $(OBJS)
+		$(CC) -o $@ $(OBJS)  -fsanitize=thread -g
 
 clean:
 		$(RM) $(OBJS)

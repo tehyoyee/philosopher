@@ -12,6 +12,19 @@
 
 #include "philo_bonus.h"
 
+void	*checker_function(void *arg)
+{
+	int		i;
+	t_rule	*rule;
+
+	rule = (t_rule *)arg;
+	i = 0;
+	while (i++ < rule->num_philo)
+		waitpid(-1, NULL, 0);
+	sem_post(rule->sem_done);
+	return (NULL);
+}
+
 int	main(int argc, char **argv)
 {
 	t_rule	rule;
@@ -20,6 +33,11 @@ int	main(int argc, char **argv)
 		return (exit_error("incorrect argument number"));
 	if (init_rule(argc, argv, &rule))
 		return (exit_error("incorrect argument"));
-	if (run_thread(&rule))
-		return (exit_error("thread error"));
+	pthread_create(&rule.checker, NULL, checker_function, &rule);
+	pthread_detach(rule.checker);
+	sem_wait(rule.sem_done);
+	end_process(&rule);
+	// printf("asdf\n");
+	// if (run_process(&rule))
+		// return (exit_error("thread error"));
 }
